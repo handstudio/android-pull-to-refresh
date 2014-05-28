@@ -18,6 +18,7 @@ package com.handmark.pulltorefresh.library;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
@@ -38,8 +39,10 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.ImageView.ScaleType;
 
 import com.handmark.pulltorefresh.configuration.xml.PullToRefreshXmlConfiguration;
 import com.handmark.pulltorefresh.library.internal.LoadingLayout;
@@ -111,6 +114,12 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 	private LoadingLayout mHeaderLayout;
 	private LoadingLayout mFooterLayout;
 
+	public ImageView imgBg;
+	Matrix matrix = new Matrix();
+	public void setTopBg(ImageView imgBg){
+		this.imgBg = imgBg;
+	}
+	
 	/**
 	 * Top DecorView for containing google style pull to refresh 
 	 */
@@ -1183,6 +1192,15 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 		final int maximumPullScroll = getMaximumPullScroll();
 		value = Math.min(maximumPullScroll, Math.max(-maximumPullScroll, value));
 
+		android.view.ViewGroup.LayoutParams params = imgBg.getLayoutParams();
+		params.height = 100 - value;
+		imgBg.setLayoutParams(params);
+		matrix.postScale(100, 100, 100, 100f);
+//		imgBg.setScaleType(ScaleType.MATRIX);
+//		matrix.reset();
+//		matrix.postScale(value * 0.01f, value * 0.01f);
+		imgBg.setImageMatrix(matrix);
+		
 		if (mLayoutVisibilityChangesEnabled) {
 			if (value < 0) {
 				switch (mCurrentMode) {

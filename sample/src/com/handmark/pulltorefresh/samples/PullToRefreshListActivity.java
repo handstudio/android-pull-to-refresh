@@ -29,6 +29,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -59,6 +60,8 @@ public final class PullToRefreshListActivity extends ListActivity {
 
 		mPullRefreshListView = (PullToRefreshListView) findViewById(R.id.pull_refresh_list);
 
+		ImageView imgBg = (ImageView) findViewById(R.id.imgListBg);
+		mPullRefreshListView.setTopBg(imgBg);
 		// Set a listener to be invoked when the list should be refreshed.
 		mPullRefreshListView.setOnRefreshListener(new OnRefreshListener<ListView>() {
 			@Override
