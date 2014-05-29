@@ -6,17 +6,25 @@
 
 <!--     The PullToRefreshListView replaces a standard ListView widget. -->
 
-	<ImageView 
-        android:id="@+id/imgListBg"
-        android:layout_width="fill_parent"
-    	android:layout_height="40dp"
-    	android:src="@drawable/icon"
-    	android:scaleType="fitCenter"/>
+	<FrameLayout 
+	    android:id="@+id/layoutTopBg"
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content">
+	    
+	    <ImageView 
+	        android:id="@+id/imgListBg"
+	        android:layout_width="fill_parent"
+	    	android:layout_height="250dp"
+	    	android:background="@drawable/beach"
+	    	android:layout_gravity="center_horizontal"
+	    	android:scaleType="center"/>
+	    
+	</FrameLayout>
 
     <com.handmark.pulltorefresh.library.PullToRefreshListView
         android:fadingEdge="none"
         android:fadingEdgeLength="0dp"
-        android:layout_below="@+id/imgListBg"
+        android:layout_below="@+id/layoutTopBg"
         android:id="@+id/pull_refresh_list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

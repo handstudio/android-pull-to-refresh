@@ -55,7 +55,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 	// Constants
 	// ===========================================================
 
-	static final boolean DEBUG = false;
+	static final boolean DEBUG = true;
 
 	static final boolean USE_HW_LAYERS = false;
 
@@ -442,17 +442,24 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 
 			case MotionEvent.ACTION_CANCEL:
 			case MotionEvent.ACTION_UP: {
+				Log.e(LOG_TAG,"ACTION_UP");
 				if (mIsBeingDragged) {
+					Log.e(LOG_TAG,"mIsBeingDragged = " + mIsBeingDragged);
 					mIsBeingDragged = false;
 
 					if (mState == State.RELEASE_TO_REFRESH
 							&& (null != mOnRefreshListener || null != mOnRefreshListener2)) {
+						
+						Log.e(LOG_TAG,"ACTION_UP 111");
+						
 						setState(State.REFRESHING, true);
-						return true;
+//						return true;
 					}
 
 					// If we're already refreshing, just scroll back to the top
 					if (isRefreshing()) {
+						
+						Log.e(LOG_TAG,"ACTION_UP 222");
 						smoothScrollTo(0);
 						return true;
 					}
@@ -673,6 +680,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 
 	final void setState(State state, final boolean... params) {
 		mState = state;
+		Log.e(LOG_TAG,"setState State = " + mState);
 		if (DEBUG) {
 			Log.d(LOG_TAG, "State: " + mState.name());
 		}
@@ -682,14 +690,14 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 				onReset();
 				break;
 			case PULL_TO_REFRESH:
-				onPullToRefresh();
+//				onPullToRefresh();
 				break;
 			case RELEASE_TO_REFRESH:
-				onReleaseToRefresh();
+//				onReleaseToRefresh();
 				break;
 			case REFRESHING:
 			case MANUAL_REFRESHING:
-				onRefreshing(params[0]);
+//				onRefreshing(params[0]);
 				break;
 			case OVERSCROLLING:
 				// NO-OP
@@ -898,58 +906,70 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 	 * @param doScroll - Whether the UI should scroll for this event.
 	 */
 	protected void onRefreshing(final boolean doScroll) {
-		// Set the flag as below for fade-in animation of mRefreshableView when releasing 
-		mRefreshing = true;
-
-		if (mMode.showHeaderLoadingLayout()) {
-			mHeaderLayout.refreshing();
-		}
-		if (mMode.showFooterLoadingLayout()) {
-			mFooterLayout.refreshing();
-		}
-		if (mMode.showGoogleStyle()) {
-			// Fade-out mRefreshableView
-			if ( mRefeshableViewHideWhileRefreshingEnabled == true ) {
-				AlphaAnimator.fadeout(mRefreshableView, mRefeshableViewHideWhileRefreshingDuration);	
-			}
-			// Fade-in refreshing bar on center
-			if (mRefeshableViewRefreshingBarViewWhileRefreshingEnabled == true ) {
-				mRefreshableViewProgressBar.setVisibility(View.VISIBLE);
-				AlphaAnimator.fadein(mRefreshableViewProgressBar, mRefeshableViewRefreshingBarViewWhileRefreshingDuration);
-			}
-
-			mGoogleStyleViewLayout.refreshing();
-			mGoogleStyleProgressLayout.refreshing();
-		}
-
-		if (doScroll) {
-			if (mShowViewWhileRefreshing) {
-
-				// Call Refresh Listener when the Scroll has finished
-				OnSmoothScrollFinishedListener listener = new OnSmoothScrollFinishedListener() {
-					@Override
-					public void onSmoothScrollFinished() {
-						callRefreshListener();
-					}
-				};
-
-				switch (mCurrentMode) {
-					case MANUAL_REFRESH_ONLY:
-					case PULL_FROM_END:
-						smoothScrollTo(getFooterSize(), listener);
-						break;
-					default:
-					case PULL_FROM_START:
-						smoothScrollTo(-getHeaderSize(), listener);
-						break;
-				}
-			} else {
-				smoothScrollTo(0);
-			}
-		} else {
-			// We're not scrolling, so just call Refresh Listener now
-			callRefreshListener();
-		}
+//		// Set the flag as below for fade-in animation of mRefreshableView when releasing
+//		Log.e("","onRefreshing");
+//		mRefreshing = true;
+//
+//		if (mMode.showHeaderLoadingLayout()) {
+//			Log.e("","onRefreshing 1");
+//			mHeaderLayout.refreshing();
+//		}
+//		if (mMode.showFooterLoadingLayout()) {
+//			Log.e("","onRefreshing 2");
+//			mFooterLayout.refreshing();
+//		}
+//		if (mMode.showGoogleStyle()) {
+//			Log.e("","onRefreshing 3");
+//			// Fade-out mRefreshableView
+//			if ( mRefeshableViewHideWhileRefreshingEnabled == true ) {
+//				Log.e("","onRefreshing 4");
+//				AlphaAnimator.fadeout(mRefreshableView, mRefeshableViewHideWhileRefreshingDuration);	
+//			}
+//			// Fade-in refreshing bar on center
+//			if (mRefeshableViewRefreshingBarViewWhileRefreshingEnabled == true ) {
+//				Log.e("","onRefreshing 5");
+//				mRefreshableViewProgressBar.setVisibility(View.VISIBLE);
+//				AlphaAnimator.fadein(mRefreshableViewProgressBar, mRefeshableViewRefreshingBarViewWhileRefreshingDuration);
+//			}
+//			Log.e("","onRefreshing 6");
+//			mGoogleStyleViewLayout.refreshing();
+//			mGoogleStyleProgressLayout.refreshing();
+//		}
+//
+//		if (doScroll) {
+//			Log.e("","onRefreshing 7");
+//			if (mShowViewWhileRefreshing) {
+//				Log.e("","onRefreshing 8");
+//				// Call Refresh Listener when the Scroll has finished
+//				OnSmoothScrollFinishedListener listener = new OnSmoothScrollFinishedListener() {
+//					@Override
+//					public void onSmoothScrollFinished() {
+//						Log.e("","onRefreshing 9");
+//						callRefreshListener();
+//					}
+//				};
+//
+//				switch (mCurrentMode) {
+//					case MANUAL_REFRESH_ONLY:
+//					case PULL_FROM_END:
+//						Log.e("","onRefreshing 10");
+//						smoothScrollTo(getFooterSize(), listener);
+//						break;
+//					default:
+//					case PULL_FROM_START:
+//						Log.e("","onRefreshing 11");
+//						smoothScrollTo(-getHeaderSize(), listener);
+//						break;
+//				}
+//			} else {
+//				Log.e("","onRefreshing 12");
+//				smoothScrollTo(0);
+//			}
+//		} else {
+//			// We're not scrolling, so just call Refresh Listener now
+//			Log.e("","onRefreshing 13");
+//			callRefreshListener();
+//		}
 	}
 
 	/**
@@ -1193,13 +1213,14 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 		value = Math.min(maximumPullScroll, Math.max(-maximumPullScroll, value));
 
 		android.view.ViewGroup.LayoutParams params = imgBg.getLayoutParams();
-		params.height = 100 - value;
+		params.height = 500 - value;
+		params.width = 800 - value;
 		imgBg.setLayoutParams(params);
-		matrix.postScale(100, 100, 100, 100f);
+//		matrix.postScale(100, 100, 100, 100f);
 //		imgBg.setScaleType(ScaleType.MATRIX);
 //		matrix.reset();
 //		matrix.postScale(value * 0.01f, value * 0.01f);
-		imgBg.setImageMatrix(matrix);
+//		imgBg.setImageMatrix(matrix);
 		
 		if (mLayoutVisibilityChangesEnabled) {
 			if (value < 0) {
@@ -1209,7 +1230,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 						break;
 					default:	
 					case PULL_FROM_START:
-						mHeaderLayout.setVisibility(View.VISIBLE);
+						mHeaderLayout.setVisibility(View.INVISIBLE);
 						break;
 				}
 			} else if (value > 0) {
@@ -1367,12 +1388,17 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 	}
 
 	private void callRefreshListener() {
+		Log.e("","callRefreshListener 1");
 		if (null != mOnRefreshListener) {
+			Log.e("","callRefreshListener 2");
 			mOnRefreshListener.onRefresh(this);
 		} else if (null != mOnRefreshListener2) {
+			Log.e("","callRefreshListener 3");
 			if (mCurrentMode == Mode.PULL_FROM_START || mCurrentMode == Mode.GOOGLE_STYLE) {
+				Log.e("","callRefreshListener 4");
 				mOnRefreshListener2.onPullDownToRefresh(this);
 			} else if (mCurrentMode == Mode.PULL_FROM_END) {
+				Log.e("","callRefreshListener 5");
 				mOnRefreshListener2.onPullUpToRefresh(this);
 			}
 		}
